@@ -82,7 +82,7 @@ SQLALCHEMY_DATABASE_URL=sqlite:///var/lib/marzban/app.db
 
 # Приложение
 DEBUG=false
-UVICORN_HOST=0.0.0.0.0
+UVICORN_HOST=0.0.0.0
 UVICORN_PORT=8000
 
 # Система лимитов

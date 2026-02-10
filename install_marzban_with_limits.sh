@@ -81,6 +81,7 @@ install_dependencies() {
                 curl \
                 wget \
                 unzip \
+                tar \
                 python3 \
                 python3-pip \
                 python3-venv \
@@ -98,6 +99,7 @@ install_dependencies() {
                 curl \
                 wget \
                 unzip \
+                tar \
                 python3 \
                 python3-pip \
                 python3-devel \
@@ -113,6 +115,7 @@ install_dependencies() {
                 curl \
                 wget \
                 unzip \
+                tar \
                 python3 \
                 python3-pip \
                 python3-devel \
@@ -145,20 +148,12 @@ create_install_dir() {
 download_marzban() {
     print_color "$YELLOW" "Downloading Marzban with limits system..."
     
-    # Download main script
-    curl -L -o $SCRIPT_NAME \
-        "https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/master/${SCRIPT_NAME}"
+    # Download full repo (includes alembic.ini and migrations)
+    curl -L "https://github.com/${REPO_OWNER}/${REPO_NAME}/archive/refs/heads/master.tar.gz" \
+        | tar -xz --strip-components=1 -C "$INSTALL_DIR"
     
-    # Download requirements
-    curl -L -o requirements.txt \
-        "https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/master/requirements.txt"
-    
-    # Download additional files for limits system
-    curl -L -o install_latest_xray.sh \
-        "https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/master/install_latest_xray.sh"
-    
-    chmod +x $SCRIPT_NAME
-    chmod +x install_latest_xray.sh
+    chmod +x "$INSTALL_DIR/$SCRIPT_NAME"
+    chmod +x "$INSTALL_DIR/install_latest_xray.sh"
     
     print_color "$GREEN" "✓ Marzban with limits downloaded"
 }
@@ -191,7 +186,7 @@ setup_database() {
     mkdir -p /var/lib/marzban
     
     # Run database migrations
-    alembic upgrade head
+    alembic -c "$INSTALL_DIR/alembic.ini" upgrade head
     
     print_color "$GREEN" "✓ Database setup complete"
 }
@@ -239,7 +234,7 @@ SQLALCHEMY_DATABASE_URL=sqlite:///var/lib/marzban/app.db
 
 # Application Configuration
 DEBUG=false
-UVICORN_HOST=0.0.0.0.0
+UVICORN_HOST=0.0.0.0
 UVICORN_PORT=8000
 
 # XRay Configuration

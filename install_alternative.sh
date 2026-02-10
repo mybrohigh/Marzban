@@ -9,6 +9,7 @@ set -e
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
+RED='\033[0;31m'
 NC='\033[0m'
 
 echo -e "${GREEN}Installing Marzban with Advanced Limits System (Alternative Method)...${NC}"
@@ -41,12 +42,13 @@ INSTALL_MODE="native"
 INSTALL_MODE="native"
 
 echo "Installing Marzban with limits..."
-# Download main files
-wget -q -O marzban.sh "https://raw.githubusercontent.com/mybrohigh/Marzban/master/marzban.sh"
-wget -q -O requirements.txt "https://raw.githubusercontent.com/mybrohigh/Marzban/master/requirements.txt"
+    # Download full repo (includes alembic.ini and migrations)
+    wget -q -O marzban.tar.gz "https://github.com/mybrohigh/Marzban/archive/refs/heads/master.tar.gz"
+    tar -xzf marzban.tar.gz --strip-components=1
+    rm -f marzban.tar.gz
 
-# Make executable
-chmod +x marzban.sh
+    # Make executable
+    chmod +x marzban.sh
 
 # Install system dependencies
 apt update > /dev/null 2>&1
@@ -67,7 +69,7 @@ mkdir -p /opt/marzban
 
 # Setup database
 export SQLALCHEMY_DATABASE_URL="sqlite:///var/lib/marzban/app.db"
-alembic upgrade head
+alembic -c /opt/marzban/alembic.ini upgrade head
 
 # Create systemd service
 cat > /etc/systemd/system/marzban.service << 'EOF'

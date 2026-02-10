@@ -9,4 +9,4 @@ COPY . /code
 RUN python -m pip install --no-cache-dir -r /code/requirements.txt \
     && pip install --no-cache-dir aiohttp sqlalchemy alembic
 
-CMD ["bash", "-c", "alembic upgrade head; python main.py"]
+CMD ["bash", "-c", "alembic -c /code/alembic.ini upgrade head; python main.py"]

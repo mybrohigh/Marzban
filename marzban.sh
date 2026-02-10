@@ -8,6 +8,12 @@ fi
 if [ -z "$MARZBAN_IMAGE" ]; then
     MARZBAN_IMAGE="mybrohigh/marzban"
 fi
+if [ -z "$REPO_OWNER" ]; then
+    REPO_OWNER="mybrohigh"
+fi
+if [ -z "$REPO_NAME" ]; then
+    REPO_NAME="Marzban"
+fi
 if [ -z "$INSTALL_MODE" ]; then
     # Auto-detect installation mode based on system capabilities
     if command -v docker >/dev/null 2>&1; then
@@ -137,17 +143,6 @@ install_docker() {
     colorized_echo green "Docker installed successfully"
 }
 
-install_marzban() {
-    if [[ "$INSTALL_MODE" == "docker" ]]; then
-        install_docker
-    elif [[ "$INSTALL_MODE" == "native" ]]; then
-        install_marzban_native
-    else
-        colorized_echo red "Error: Unknown installation mode: $INSTALL_MODE"
-        exit 1
-    fi
-}
-
 detect_compose() {
     # Check if docker compose command exists
     if docker compose version >/dev/null 2>&1; then
@@ -180,17 +175,13 @@ install_marzban_native() {
     mkdir -p $APP_DIR
     cd $APP_DIR
     
-    # Download Marzban with limits
+    # Download full Marzban repo (includes alembic.ini and migrations)
     colorized_echo blue "Downloading Marzban with limits system..."
-    curl -L -o marzban.sh \
-        "https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/master/marzban.sh"
-    curl -L -o requirements.txt \
-        "https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/master/requirements.txt"
-    curl -L -o install_latest_xray.sh \
-        "https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/master/install_latest_xray.sh"
+    curl -L "https://github.com/${REPO_OWNER}/${REPO_NAME}/archive/refs/heads/master.tar.gz" \
+        | tar -xz --strip-components=1 -C "$APP_DIR"
     
-    chmod +x marzban.sh
-    chmod +x install_latest_xray.sh
+    chmod +x "$APP_DIR/marzban.sh"
+    chmod +x "$APP_DIR/install_latest_xray.sh"
     
     # Install Python and system dependencies
     colorized_echo blue "Installing system dependencies..."
@@ -217,7 +208,7 @@ install_marzban_native() {
     # Setup database
     colorized_echo blue "Setting up database..."
     export SQLALCHEMY_DATABASE_URL="sqlite:///$DATA_DIR/app.db"
-    alembic upgrade head
+    alembic -c "$APP_DIR/alembic.ini" upgrade head
     
     # Create systemd service
     colorized_echo blue "Creating systemd service..."
@@ -255,11 +246,11 @@ SQLALCHEMY_DATABASE_URL=sqlite:///$DATA_DIR/app.db
 
 # Application Configuration
 DEBUG=false
-UVICORN_HOST=0.0.0.0.0
+UVICORN_HOST=0.0.0.0
 UVICORN_PORT=8000
 
 # XRay Configuration
-XRAY_JSON_PATH=/$DATA_DIR/xray_config.json
+XRAY_JSON_PATH=$DATA_DIR/xray_config.json
 
 # Limits System Configuration
 LIMITS_MONITOR_ENABLED=true
