@@ -1,0 +1,12 @@
+FROM gozargah/marzban@sha256:78cdfcf54cb3d918628bda6001e1576cbcf9835916a92081483faed83f49a2d8
+
+WORKDIR /code
+
+# Overlay our forked code onto the base image
+COPY . /code
+
+# Ensure dependencies for limits system are installed
+RUN python -m pip install --no-cache-dir -r /code/requirements.txt \
+    && pip install --no-cache-dir aiohttp sqlalchemy alembic
+
+CMD ["bash", "-c", "alembic upgrade head; python main.py"]

@@ -9,7 +9,22 @@ if [ -z "$MARZBAN_IMAGE" ]; then
     MARZBAN_IMAGE="mybrohigh/marzban"
 fi
 if [ -z "$INSTALL_MODE" ]; then
-    INSTALL_MODE="docker"
+    # Auto-detect installation mode based on system capabilities
+    if command -v docker >/dev/null 2>&1; then
+        if [[ -f "/var/lib/marzban/app.db" ]] || [[ -d "/opt/marzban/app/db" ]]; then
+            # If database exists and Docker is available, use Docker mode
+            INSTALL_MODE="docker"
+            colorized_echo yellow "Auto-detected Docker installation mode"
+        else
+            # If no database exists, use Native mode
+            INSTALL_MODE="native"
+            colorized_echo blue "Auto-detected Native installation mode (with limits system)"
+        fi
+    else
+        # No Docker available, use Native mode
+        INSTALL_MODE="native"
+        colorized_echo blue "Auto-detected Native installation mode (with limits system)"
+    fi
 fi
 APP_DIR="$INSTALL_DIR/$APP_NAME"
 DATA_DIR="/var/lib/$APP_NAME"
@@ -120,6 +135,17 @@ install_docker() {
     colorized_echo blue "Installing Docker"
     curl -fsSL https://get.docker.com | sh
     colorized_echo green "Docker installed successfully"
+}
+
+install_marzban() {
+    if [[ "$INSTALL_MODE" == "docker" ]]; then
+        install_docker
+    elif [[ "$INSTALL_MODE" == "native" ]]; then
+        install_marzban_native
+    else
+        colorized_echo red "Error: Unknown installation mode: $INSTALL_MODE"
+        exit 1
+    fi
 }
 
 detect_compose() {
