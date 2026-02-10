@@ -126,7 +126,7 @@ sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban
 ???????: ???? ????? ????? Docker (??????? `mybrohigh/marzban`) ????? `MARZBAN_IMAGE` ?? ????? ????:
 
 ```bash
-sudo MARZBAN_IMAGE=ghcr.io/your-org/marzban bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
+sudo MARZBAN_IMAGE=mybrohigh/marzban bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
 ```
 
 وقتی نصب تمام شد:

@@ -128,7 +128,7 @@ sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban
 Optional: override the Docker image (default is `mybrohigh/marzban`) by setting `MARZBAN_IMAGE`:
 
 ```bash
-sudo MARZBAN_IMAGE=ghcr.io/your-org/marzban bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
+sudo MARZBAN_IMAGE=mybrohigh/marzban bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
 ```
 
 Once the installation is complete:
