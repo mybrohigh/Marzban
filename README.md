@@ -111,18 +111,24 @@ Marzban is user-friendly, feature-rich and reliable. It lets you to create diffe
 Run the following command to install Marzban with SQLite database:
 
 ```bash
-sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install
+sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
 ```
 
 Run the following command to install Marzban with MySQL database:
 
 ```bash
-sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install --database mysql
+sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install --database mysql
 ```
 
 Run the following command to install Marzban with MariaDB database:
 ```bash
-sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install --database mariadb
+sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install --database mariadb
+```
+
+Optional: override the Docker image (default is `mybrohigh/marzban`) by setting `MARZBAN_IMAGE`:
+
+```bash
+sudo MARZBAN_IMAGE=ghcr.io/your-org/marzban bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
 ```
 
 Once the installation is complete:
@@ -348,7 +354,7 @@ Marzban's backup service efficiently zips all necessary files and sends them to 
 
 Install the Latest Version of Marzban Command:
 ```bash
-sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install-script
+sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install-script
 ```
 
 Setup the Backup Service:

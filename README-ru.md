@@ -111,18 +111,24 @@ Marzban удобен в использовании, многофункциона
 Установка Marzban с базой данных SQLite (по умолчанию):
 
 ```bash
-sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install
+sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
 ```
 
 Установка Marzban с базой данных MySQL:
 
 ```bash
-sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install --database mysql
+sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install --database mysql
 ```
 
 Установка Marzban с базой данных MariaDB:
 ```bash
-sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install --database mariadb
+sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install --database mariadb
+```
+
+Необязательно: можно переопределить Docker-образ (по умолчанию `mybrohigh/marzban`), задав `MARZBAN_IMAGE`:
+
+```bash
+sudo MARZBAN_IMAGE=ghcr.io/your-org/marzban bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
 ```
 
 Когда установка будет завершена:
@@ -356,7 +362,7 @@ Marzban поставляется с встроенным ботом Telegram, к
 Установка последней версии Marzban:
 
 ```bash
-sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install-script
+sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install-script
 ```
 
 Настройка сервиса резервного копирования:
@@ -449,3 +455,4 @@ Body:
 <p align="center">
   Made with <a rel="noopener noreferrer" target="_blank" href="https://contrib.rocks">contrib.rocks</a>
 </p>
+
