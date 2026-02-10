@@ -34,6 +34,7 @@ app.add_middleware(
 )
 from app import dashboard, jobs, routers, telegram  # noqa
 from app.routers import api_router  # noqa
+from app.jobs.limits_monitor import start_limits_monitor, stop_limits_monitor  # noqa
 
 app.include_router(api_router)
 
@@ -56,10 +57,12 @@ def on_startup():
             f"you can't use /{XRAY_SUBSCRIPTION_PATH}/ as subscription path it reserved for {app.title}"
         )
     scheduler.start()
+    start_limits_monitor()
 
 
 @app.on_event("shutdown")
 def on_shutdown():
+    stop_limits_monitor()
     scheduler.shutdown()
 
 

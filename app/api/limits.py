@@ -3,21 +3,31 @@ API endpoints for advanced limits management
 """
 
 from datetime import datetime
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.models.limits import (
-    LimitRule, AdvancedUserLimits, LimitTemplate, 
-    LimitViolation, LimitNotification, UserLimitStatus,
-    LimitType, LimitAction, DEFAULT_TEMPLATES
+from app.models.limits_db import (
+    UserLimit, LimitTemplate, LimitViolation, 
+    LimitNotification, LimitTypes, LimitActions,
+    BASIC_TEMPLATE, PREMIUM_TEMPLATE, ENTERPRISE_TEMPLATE
+)
+from app.db.crud_limits import (
+    create_user_limit, get_user_limits, get_user_limit,
+    update_user_limit, delete_user_limit,
+    create_limit_violation, get_user_violations,
+    resolve_violation, get_active_violations_count,
+    create_limit_template, get_limit_templates,
+    apply_template_to_user, get_users_with_limits_count,
+    check_user_limits, get_limits_stats,
+    initialize_default_templates
 )
 from app.models.user import User, get_db_user
 from app.dependencies import get_admin
 from app.models.admin import Admin
 
-router = APIRouter(prefix="/limits", tags=["limits"])
+router = APIRouter(prefix="/api/limits", tags=["limits"])
 
 
 @router.get("/templates", response_model=List[LimitTemplate])
@@ -26,7 +36,7 @@ async def get_limit_templates(
     db: Session = Depends(get_db)
 ):
     """Get all available limit templates"""
-    return DEFAULT_TEMPLATES
+    return get_limit_templates(db, active_only=True)
 
 
 @router.post("/templates", response_model=LimitTemplate)
@@ -36,11 +46,10 @@ async def create_limit_template(
     db: Session = Depends(get_db)
 ):
     """Create a new limit template"""
-    # Save to database (implementation needed)
-    return template
+    return create_limit_template(db, template.name, template.description, admin.username)
 
 
-@router.get("/users/{username}", response_model=UserLimitStatus)
+@router.get("/users/{username}", response_model=List[UserLimit])
 async def get_user_limits(
     username: str,
     admin: Admin = Depends(get_admin),
@@ -51,15 +60,13 @@ async def get_user_limits(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    # Calculate current usage and limits
-    limits_status = calculate_user_limits_status(user, db)
-    return limits_status
+    return get_user_limits(db, username)
 
 
-@router.post("/users/{username}", response_model=AdvancedUserLimits)
+@router.post("/users/{username}", response_model=Dict[str, str])
 async def set_user_limits(
     username: str,
-    limits: AdvancedUserLimits,
+    limits: Dict[str, Any],
     admin: Admin = Depends(get_admin),
     db: Session = Depends(get_db)
 ):
@@ -68,9 +75,24 @@ async def set_user_limits(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    # Apply limits to user (implementation needed)
-    limits.username = username
-    return limits
+    results = {}
+    for limit_type, limit_data in limits.items():
+        limit_rule = create_user_limit(
+            db=db,
+            username=username,
+            limit_type=limit_type,
+            limit_value=limit_data.get('value', 0),
+            action=limit_data.get('action', 'notify'),
+            notification_threshold=limit_data.get('notification_threshold', 0.8),
+            webhook_url=limit_data.get('webhook_url'),
+            webhook_enabled=limit_data.get('webhook_enabled', False),
+            auto_reset_enabled=limit_data.get('auto_reset_enabled', True),
+            reset_schedule=limit_data.get('reset_schedule'),
+            description=limit_data.get('description')
+        )
+        results[limit_type] = f"Limit {limit_type} set successfully"
+    
+    return results
 
 
 @router.get("/users/{username}/violations", response_model=List[LimitViolation])
@@ -85,14 +107,13 @@ async def get_user_violations(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    # Get violations from database (implementation needed)
-    violations = get_user_limit_violations(db, username, limit)
-    return violations
+    return get_user_violations(db, username, limit)
 
 
 @router.post("/users/{username}/check")
 async def check_user_limits(
     username: str,
+    current_usage: Dict[str, int],
     admin: Admin = Depends(get_admin),
     db: Session = Depends(get_db)
 ):
@@ -102,8 +123,27 @@ async def check_user_limits(
         raise HTTPException(status_code=404, detail="User not found")
     
     # Check all limits and take actions
-    result = enforce_user_limits(user, db)
-    return result
+    results = check_user_limits(db, username, current_usage)
+    return results
+
+
+@router.post("/users/{username}/apply-template")
+async def apply_template_to_user(
+    username: str,
+    template_id: int,
+    admin: Admin = Depends(get_admin),
+    db: Session = Depends(get_db)
+):
+    """Apply a template to a user"""
+    user = get_db_user(db, username)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    success = apply_template_to_user(db, username, template_id)
+    if success:
+        return {"message": f"Template {template_id} applied successfully to {username}"}
+    else:
+        raise HTTPException(status_code=400, detail="Failed to apply template")
 
 
 @router.get("/stats", response_model=Dict[str, int])
@@ -112,58 +152,33 @@ async def get_limits_stats(
     db: Session = Depends(get_db)
 ):
     """Get statistics about limits usage"""
-    stats = {
-        "total_users_with_limits": get_users_with_limits_count(db),
-        "active_violations": get_active_violations_count(db),
-        "templates_count": len(DEFAULT_TEMPLATES),
-        "notifications_sent": get_notifications_sent_count(db)
-    }
-    return stats
+    return get_limits_stats(db)
 
 
-@router.post("/notifications/config", response_model=LimitNotification)
-async def set_notification_config(
-    config: LimitNotification,
+@router.post("/initialize")
+async def initialize_templates(
     admin: Admin = Depends(get_admin),
     db: Session = Depends(get_db)
 ):
-    """Set notification configuration for limits"""
-    # Save notification config (implementation needed)
-    return config
+    """Initialize default templates"""
+    initialize_default_templates(db, admin.username)
+    return {"message": "Default templates initialized"}
 
 
-# Helper functions (to be implemented)
-def calculate_user_limits_status(user: User, db: Session) -> UserLimitStatus:
-    """Calculate current limits status for a user"""
-    # Implementation needed
-    pass
-
-
-def get_user_limit_violations(db: Session, username: str, limit: Optional[int]) -> List[LimitViolation]:
-    """Get limit violations for a user"""
-    # Implementation needed
-    pass
-
-
-def enforce_user_limits(user: User, db: Session) -> Dict[str, str]:
-    """Check and enforce user limits"""
-    # Implementation needed
-    pass
-
-
-def get_users_with_limits_count(db: Session) -> int:
-    """Get count of users with custom limits"""
-    # Implementation needed
-    pass
-
-
-def get_active_violations_count(db: Session) -> int:
-    """Get count of active limit violations"""
-    # Implementation needed
-    pass
-
-
-def get_notifications_sent_count(db: Session) -> int:
-    """Get count of notifications sent"""
-    # Implementation needed
-    pass
+@router.delete("/users/{username}/{limit_type}")
+async def delete_user_limit(
+    username: str,
+    limit_type: str,
+    admin: Admin = Depends(get_admin),
+    db: Session = Depends(get_db)
+):
+    """Delete a specific limit for a user"""
+    user = get_db_user(db, username)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    success = delete_user_limit(db, username, limit_type)
+    if success:
+        return {"message": f"Limit {limit_type} deleted for {username}"}
+    else:
+        raise HTTPException(status_code=400, detail="Failed to delete limit")
