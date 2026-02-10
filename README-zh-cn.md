@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/mybrohigh/marzban" target="_blank" rel="noopener noreferrer">
+  <a href="https://github.com/yunuselektronika-ops/marzban" target="_blank" rel="noopener noreferrer">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://github.com/mybrohigh/Marzban/raw/master/screenshots/logo-dark.png">
       <img width="160" height="160" src="https://github.com/mybrohigh/Marzban/raw/master/screenshots/logo-light.png">
@@ -16,13 +16,13 @@
 <br/>
 <p align="center">
     <a href="#">
-        <img src="https://img.shields.io/github/actions/workflow/status/mybrohigh/marzban/build.yml?style=flat-square" />
+        <img src="https://img.shields.io/github/actions/workflow/status/yunuselektronika-ops/marzban/build.yml?style=flat-square" />
     </a>
-    <a href="https://hub.docker.com/r/mybrohigh/marzban" target="_blank">
-        <img src="https://img.shields.io/docker/pulls/mybrohigh/marzban?style=flat-square&logo=docker" />
+    <a href="https://hub.docker.com/r/yunuselektronika-ops/marzban" target="_blank">
+        <img src="https://img.shields.io/docker/pulls/yunuselektronika-ops/marzban?style=flat-square&logo=docker" />
     </a>
     <a href="#">
-        <img src="https://img.shields.io/github/license/mybrohigh/marzban?style=flat-square" />
+        <img src="https://img.shields.io/github/license/yunuselektronika-ops/marzban?style=flat-square" />
     </a>
     <a href="https://t.me/gozargah_marzban" target="_blank">
         <img src="https://img.shields.io/badge/telegram-group-blue?style=flat-square&logo=telegram" />
@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/twitter-commiunity-blue?style=flat-square&logo=twitter" />
     </a>
     <a href="#">
-        <img src="https://img.shields.io/github/stars/mybrohigh/marzban?style=social" />
+        <img src="https://img.shields.io/github/stars/yunuselektronika-ops/marzban?style=social" />
     </a>
 </p>
 
@@ -54,7 +54,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/mybrohigh/marzban" target="_blank" rel="noopener noreferrer" >
+  <a href="https://github.com/yunuselektronika-ops/marzban" target="_blank" rel="noopener noreferrer" >
     <img src="https://github.com/mybrohigh/Marzban/raw/master/screenshots/preview.png" alt="Marzban screenshots" width="600" height="auto">
   </a>
 </p>
@@ -108,24 +108,24 @@ Marzban 是一个用户友好、功能丰富且可靠的工具。它让您可以
 运行以下命令以使用 SQLite 数据库安装 Marzban。
 
 ```bash
-sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
+sudo bash -c "$(curl -sL https://github.com/yunuselektronika-ops/Marzban/raw/master/marzban.sh)" @ install
 ```
 
 运行以下命令以使用 MySQL 数据库安装 Marzban。
 
 ```bash
-sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install --database mysql
+sudo bash -c "$(curl -sL https://github.com/yunuselektronika-ops/Marzban/raw/master/marzban.sh)" @ install --database mysql
 ```
 
 运行以下命令以使用 MariaDB 数据库安装 Marzban。
 ```bash
-sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install --database mariadb
+sudo bash -c "$(curl -sL https://github.com/yunuselektronika-ops/Marzban/raw/master/marzban.sh)" @ install --database mariadb
 ```
 
-??:???? `MARZBAN_IMAGE` ?? Docker ??(?? `mybrohigh/marzban`):
+??:???? `MARZBAN_IMAGE` ?? Docker ??(?? `yunuselektronika-ops/marzban`):
 
 ```bash
-sudo MARZBAN_IMAGE=mybrohigh/marzban bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
+sudo MARZBAN_IMAGE=yunuselektronika-ops/marzban bash -c "$(curl -sL https://github.com/yunuselektronika-ops/Marzban/raw/master/marzban.sh)" @ install
 ```
 
 Once the installation is complete:
@@ -338,7 +338,7 @@ Marzban 的备份服务会高效地压缩所有必要文件并将它们发送到
 
 安装最新版 Marzban 命令：
 ```bash
-sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install-script
+sudo bash -c "$(curl -sL https://github.com/yunuselektronika-ops/Marzban/raw/master/marzban.sh)" @ install-script
 ```
 
 设置备份服务：

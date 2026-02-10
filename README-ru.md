@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/mybrohigh/marzban" target="_blank" rel="noopener noreferrer">
+  <a href="https://github.com/yunuselektronika-ops/marzban" target="_blank" rel="noopener noreferrer">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://github.com/mybrohigh/Marzban/raw/master/screenshots/logo-dark.png">
       <img width="160" height="160" src="https://github.com/mybrohigh/Marzban/raw/master/screenshots/logo-light.png">
@@ -16,13 +16,13 @@
 <br/>
 <p align="center">
     <a href="#">
-        <img src="https://img.shields.io/github/actions/workflow/status/mybrohigh/marzban/build.yml?style=flat-square" />
+        <img src="https://img.shields.io/github/actions/workflow/status/yunuselektronika-ops/marzban/build.yml?style=flat-square" />
     </a>
-    <a href="https://hub.docker.com/r/mybrohigh/marzban" target="_blank">
-        <img src="https://img.shields.io/docker/pulls/mybrohigh/marzban?style=flat-square&logo=docker" />
+    <a href="https://hub.docker.com/r/yunuselektronika-ops/marzban" target="_blank">
+        <img src="https://img.shields.io/docker/pulls/yunuselektronika-ops/marzban?style=flat-square&logo=docker" />
     </a>
     <a href="#">
-        <img src="https://img.shields.io/github/license/mybrohigh/marzban?style=flat-square" />
+        <img src="https://img.shields.io/github/license/yunuselektronika-ops/marzban?style=flat-square" />
     </a>
     <a href="https://t.me/gozargah_marzban" target="_blank">
         <img src="https://img.shields.io/badge/telegram-group-blue?style=flat-square&logo=telegram" />
@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/twitter-commiunity-blue?style=flat-square&logo=twitter" />
     </a>
     <a href="#">
-        <img src="https://img.shields.io/github/stars/mybrohigh/marzban?style=social" />
+        <img src="https://img.shields.io/github/stars/yunuselektronika-ops/marzban?style=social" />
     </a>
 </p>
 
@@ -54,7 +54,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/mybrohigh/marzban" target="_blank" rel="noopener noreferrer" >
+  <a href="https://github.com/yunuselektronika-ops/marzban" target="_blank" rel="noopener noreferrer" >
     <img src="https://github.com/mybrohigh/Marzban/raw/master/screenshots/preview.png" alt="Marzban screenshots" width="600" height="auto">
   </a>
 </p>
@@ -111,24 +111,24 @@ Marzban удобен в использовании, многофункциона
 Установка Marzban с базой данных SQLite (по умолчанию):
 
 ```bash
-sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
+sudo bash -c "$(curl -sL https://github.com/yunuselektronika-ops/Marzban/raw/master/marzban.sh)" @ install
 ```
 
 Установка Marzban с базой данных MySQL:
 
 ```bash
-sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install --database mysql
+sudo bash -c "$(curl -sL https://github.com/yunuselektronika-ops/Marzban/raw/master/marzban.sh)" @ install --database mysql
 ```
 
 Установка Marzban с базой данных MariaDB:
 ```bash
-sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install --database mariadb
+sudo bash -c "$(curl -sL https://github.com/yunuselektronika-ops/Marzban/raw/master/marzban.sh)" @ install --database mariadb
 ```
 
-Необязательно: можно переопределить Docker-образ (по умолчанию `mybrohigh/marzban`), задав `MARZBAN_IMAGE`:
+Необязательно: можно переопределить Docker-образ (по умолчанию `yunuselektronika-ops/marzban`), задав `MARZBAN_IMAGE`:
 
 ```bash
-sudo MARZBAN_IMAGE=mybrohigh/marzban bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install
+sudo MARZBAN_IMAGE=yunuselektronika-ops/marzban bash -c "$(curl -sL https://github.com/yunuselektronika-ops/Marzban/raw/master/marzban.sh)" @ install
 ```
 
 Когда установка будет завершена:
@@ -362,7 +362,7 @@ Marzban поставляется с встроенным ботом Telegram, к
 Установка последней версии Marzban:
 
 ```bash
-sudo bash -c "$(curl -sL https://github.com/mybrohigh/Marzban/raw/master/marzban.sh)" @ install-script
+sudo bash -c "$(curl -sL https://github.com/yunuselektronika-ops/Marzban/raw/master/marzban.sh)" @ install-script
 ```
 
 Настройка сервиса резервного копирования:

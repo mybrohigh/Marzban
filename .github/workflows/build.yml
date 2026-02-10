@@ -55,7 +55,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            mybrohigh/marzban:latest
-            mybrohigh/marzban:${{github.ref_name}}
-            ghcr.io/mybrohigh/marzban:latest
-            ghcr.io/mybrohigh/marzban:${{github.ref_name}}
+            yunuselektronika-ops/marzban:latest
+            yunuselektronika-ops/marzban:${{github.ref_name}}
+            ghcr.io/yunuselektronika-ops/marzban:latest
+            ghcr.io/yunuselektronika-ops/marzban:${{github.ref_name}}

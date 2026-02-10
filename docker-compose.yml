@@ -1,6 +1,6 @@
 services:
   marzban:
-    image: mybrohigh/marzban:latest
+    image: yunuselektronika-ops/marzban:latest
     restart: always
     env_file: .env
     network_mode: host
