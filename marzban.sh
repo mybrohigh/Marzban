@@ -20,17 +20,23 @@ colorized_echo() {
     
     case $color in
         "red")
-        printf "\e[91m${text}\e[0m\n";;
+        printf "\e[91m${text}\e[0m\n"
+        ;;
         "green")
-        printf "\e[92m${text}\e[0m\n";;
+        printf "\e[92m${text}\e[0m\n"
+        ;;
         "yellow")
-        printf "\e[93m${text}\e[0m\n";;
+        printf "\e[93m${text}\e[0m\n"
+        ;;
         "blue")
-        printf "\e[94m${text}\e[0m\n";;
+        printf "\e[94m${text}\e[0m\n"
+        ;;
         "magenta")
-        printf "\e[95m${text}\e[0m\n";;
+        printf "\e[95m${text}\e[0m\n"
+        ;;
         "cyan")
-        printf "\e[96m${text}\e[0m\n";;
+        printf "\e[96m${text}\e[0m\n"
+        ;;
         *)
             echo "${text}"
         ;;
@@ -86,7 +92,7 @@ detect_and_update_package_manager() {
 }
 
 install_package () {
-    if [ -z $PKG_MANAGER ]; then
+    if [ -z "$PKG_MANAGER" ]; then
         detect_and_update_package_manager
     fi
     
@@ -228,7 +234,7 @@ send_backup_to_telegram() {
     local latest_backup=$(ls -t "$APP_DIR/backup" | head -n 1)
     local backup_path="$APP_DIR/backup/$latest_backup"
 
-    if [ ! -f "$backup_path" ]; then
+    if [ -f "$backup_path" ]; then
         colorized_echo red "No backups found to send."
         return
     fi
@@ -281,7 +287,7 @@ send_backup_error_to_telegram() {
     message=$(echo -e "$message" | sed 's/-/\\-/g;s/\./\\./g;s/_/\\_/g;s/(/\\(/g;s/)/\\)/g')
 
     local max_length=1000
-    if [ ${#message} -gt $max_length ]; then
+    if [ "${#message}" -gt $max_length ]; then
         message="${message:0:$((max_length - 50))}...\n\`[Message truncated]\`"
     fi
 
@@ -397,7 +403,7 @@ backup_service() {
         printf "Set up the backup interval in hours (1-24):\n"
         read interval_hours
 
-        if ! [[ "$interval_hours" =~ ^[0-9]+$ ]]; then
+        if [[ "$interval_hours" =~ ^[0-9]+$ ]]; then
             colorized_echo red "Invalid input. Please enter a valid number."
             continue
         fi
@@ -583,7 +589,7 @@ backup_command() {
 
     rm -rf "$temp_dir"
 
-    if [ ${#error_messages[@]} -gt 0 ]; then
+    if [ "${#error_messages[@]}" -gt 0 ]; then
         send_backup_error_to_telegram "${error_messages[*]}" "$log_file"
         return
     fi
@@ -1208,7 +1214,7 @@ marzban_cli() {
 
 
 is_marzban_up() {
-    if [ -z "$($COMPOSE -f $COMPOSE_FILE ps -q -a)" ]; then
+    if [ -z "($($COMPOSE -f $COMPOSE_FILE ps -q -a))" ]; then
         return 1
     else
         return 0
