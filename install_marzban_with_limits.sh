@@ -197,7 +197,15 @@ PY
     mkdir -p /var/lib/marzban
     
     # Run database migrations
-    alembic -c "$INSTALL_DIR/alembic.ini" upgrade head
+    print_color "$BLUE" "Running migrations (alembic)..."
+    if command -v timeout >/dev/null 2>&1; then
+        if ! timeout 300s alembic -c "$INSTALL_DIR/alembic.ini" upgrade head; then
+            print_color "$RED" "Migration failed or timed out. Check database file and logs."
+            exit 1
+        fi
+    else
+        alembic -c "$INSTALL_DIR/alembic.ini" upgrade head
+    fi
     
     print_color "$GREEN" "✓ Database setup complete"
 }

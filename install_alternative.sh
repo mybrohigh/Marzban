@@ -78,7 +78,15 @@ PY
 if [[ $? -ne 0 ]]; then
     pip install --upgrade setuptools
 fi
-alembic -c /opt/marzban/alembic.ini upgrade head
+echo -e "${BLUE}Running migrations (alembic)...${NC}"
+if command -v timeout >/dev/null 2>&1; then
+    if ! timeout 300s alembic -c /opt/marzban/alembic.ini upgrade head; then
+        echo -e "${RED}Migration failed or timed out. Check database file and logs.${NC}"
+        exit 1
+    fi
+else
+    alembic -c /opt/marzban/alembic.ini upgrade head
+fi
 
 # Create systemd service
 cat > /etc/systemd/system/marzban.service << 'EOF'

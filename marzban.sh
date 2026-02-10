@@ -217,7 +217,15 @@ PY
     if [[ $? -ne 0 ]]; then
         pip install --upgrade setuptools
     fi
-    alembic -c "$APP_DIR/alembic.ini" upgrade head
+    colorized_echo blue "Running migrations (alembic)..."
+    if command -v timeout >/dev/null 2>&1; then
+        if ! timeout 300s alembic -c "$APP_DIR/alembic.ini" upgrade head; then
+            colorized_echo red "Migration failed or timed out. Check database file and logs."
+            exit 1
+        fi
+    else
+        alembic -c "$APP_DIR/alembic.ini" upgrade head
+    fi
     
     # Create systemd service
     colorized_echo blue "Creating systemd service..."
