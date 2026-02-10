@@ -69,6 +69,15 @@ mkdir -p /opt/marzban
 
 # Setup database
 export SQLALCHEMY_DATABASE_URL="sqlite:///var/lib/marzban/app.db"
+python - <<'PY'
+try:
+    import pkg_resources  # noqa: F401
+except Exception:
+    raise SystemExit(1)
+PY
+if [[ $? -ne 0 ]]; then
+    pip install --upgrade setuptools
+fi
 alembic -c /opt/marzban/alembic.ini upgrade head
 
 # Create systemd service

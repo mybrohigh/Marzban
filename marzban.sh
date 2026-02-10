@@ -208,6 +208,15 @@ install_marzban_native() {
     # Setup database
     colorized_echo blue "Setting up database..."
     export SQLALCHEMY_DATABASE_URL="sqlite:///$DATA_DIR/app.db"
+    python - <<'PY'
+try:
+    import pkg_resources  # noqa: F401
+except Exception:
+    raise SystemExit(1)
+PY
+    if [[ $? -ne 0 ]]; then
+        pip install --upgrade setuptools
+    fi
     alembic -c "$APP_DIR/alembic.ini" upgrade head
     
     # Create systemd service

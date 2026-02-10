@@ -62,6 +62,15 @@ install_marzban() {
     # Setup database
     print_color "$BLUE" "Setting up database..."
     export SQLALCHEMY_DATABASE_URL="sqlite:///var/lib/marzban/app.db"
+    python - <<'PY'
+try:
+    import pkg_resources  # noqa: F401
+except Exception:
+    raise SystemExit(1)
+PY
+    if [[ $? -ne 0 ]]; then
+        pip install --upgrade setuptools
+    fi
     alembic upgrade head
     
     # Create systemd service

@@ -182,6 +182,17 @@ setup_python_env() {
 setup_database() {
     print_color "$YELLOW" "Setting up database..."
     
+    # Ensure setuptools (pkg_resources) is available
+    python - <<'PY'
+try:
+    import pkg_resources  # noqa: F401
+except Exception:
+    raise SystemExit(1)
+PY
+    if [[ $? -ne 0 ]]; then
+        pip install --upgrade setuptools
+    fi
+    
     # Create database directory
     mkdir -p /var/lib/marzban
     
