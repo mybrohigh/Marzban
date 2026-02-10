@@ -1,8 +1,8 @@
 <p align="center">
-  <a href="https://github.com/gozargah/marzban" target="_blank" rel="noopener noreferrer">
+  <a href="https://github.com/mybrohigh/marzban" target="_blank" rel="noopener noreferrer">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Gozargah/Marzban-docs/raw/master/screenshots/logo-dark.png">
-      <img width="160" height="160" src="https://github.com/Gozargah/Marzban-docs/raw/master/screenshots/logo-light.png">
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/mybrohigh/Marzban/raw/master/screenshots/logo-dark.png">
+      <img width="160" height="160" src="https://github.com/mybrohigh/Marzban/raw/master/screenshots/logo-light.png">
     </picture>
   </a>
 </p>
@@ -16,13 +16,13 @@
 <br/>
 <p align="center">
     <a href="#">
-        <img src="https://img.shields.io/github/actions/workflow/status/gozargah/marzban/build.yml?style=flat-square" />
+        <img src="https://img.shields.io/github/actions/workflow/status/mybrohigh/marzban/build.yml?style=flat-square" />
     </a>
-    <a href="https://hub.docker.com/r/gozargah/marzban" target="_blank">
-        <img src="https://img.shields.io/docker/pulls/gozargah/marzban?style=flat-square&logo=docker" />
+    <a href="https://hub.docker.com/r/mybrohigh/marzban" target="_blank">
+        <img src="https://img.shields.io/docker/pulls/mybrohigh/marzban?style=flat-square&logo=docker" />
     </a>
     <a href="#">
-        <img src="https://img.shields.io/github/license/gozargah/marzban?style=flat-square" />
+        <img src="https://img.shields.io/github/license/mybrohigh/marzban?style=flat-square" />
     </a>
     <a href="https://t.me/gozargah_marzban" target="_blank">
         <img src="https://img.shields.io/badge/telegram-group-blue?style=flat-square&logo=telegram" />
@@ -31,7 +31,7 @@
         <img src="https://img.shields.io/badge/twitter-commiunity-blue?style=flat-square&logo=twitter" />
     </a>
     <a href="#">
-        <img src="https://img.shields.io/github/stars/gozargah/marzban?style=social" />
+        <img src="https://img.shields.io/github/stars/mybrohigh/marzban?style=social" />
     </a>
 </p>
 
@@ -54,8 +54,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/gozargah/marzban" target="_blank" rel="noopener noreferrer" >
-    <img src="https://github.com/Gozargah/Marzban-docs/raw/master/screenshots/preview.png" alt="Marzban screenshots" width="600" height="auto">
+  <a href="https://github.com/mybrohigh/marzban" target="_blank" rel="noopener noreferrer" >
+    <img src="https://github.com/mybrohigh/Marzban/raw/master/screenshots/preview.png" alt="Marzban screenshots" width="600" height="auto">
   </a>
 </p>
 
@@ -178,7 +178,7 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
 您需要 Python>=3.8 版本。
 
 ```bash
-git clone https://github.com/Gozargah/Marzban.git
+git clone https://github.com/mybrohigh/Marzban.git
 cd Marzban
 wget -qO- https://bootstrap.pypa.io/get-pip.py | python3 -
 python3 -m pip install -r requirements.txt
